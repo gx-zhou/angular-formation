@@ -12,6 +12,8 @@ import { UserCardComponent } from './user-card/user-card.component';
 })
 export class UsersComponent {
   nbSelected = 0
+  extSelected = ''
+  extensions: string[] =  ['tv', 'biz', 'io', 'me']
   users: User[] = [
     {
       id: 1,
