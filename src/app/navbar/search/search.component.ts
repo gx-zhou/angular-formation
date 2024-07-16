@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AutoCompletePipe } from '../../shared/pipes/autocomplete.pipe';
 
@@ -24,10 +24,14 @@ import { AutoCompletePipe } from '../../shared/pipes/autocomplete.pipe';
   standalone: true,
   imports: [FormsModule, AutoCompletePipe /*, NgIf, NgFor*/],
 })
-export class SearchComponent {
+export class SearchComponent implements OnInit {
   @Input() userName = '';
   @Output() eventSearch: EventEmitter<string> = new EventEmitter();
   firstNames: string[] = ['ana', 'ben', 'jim'];
+
+  ngOnInit() {
+    console.log(this.userName)
+  }
 
   search() {
     this.eventSearch.emit(this.userName);

@@ -1,5 +1,6 @@
 import { CurrencyPipe, UpperCasePipe } from "@angular/common";
-import { Component } from "@angular/core";
+import { Component, OnInit, inject } from "@angular/core";
+import { AppService } from "../core/services/app.service";
 import { SearchComponent } from "./search/search.component";
 
 @Component({
@@ -11,10 +12,18 @@ import { SearchComponent } from "./search/search.component";
     standalone: true,
     imports: [SearchComponent, UpperCasePipe, CurrencyPipe]
 })
-export class NavbarComponent {
-    title = 'Mon App'
+export class NavbarComponent implements OnInit {
+    private appService = inject(AppService)
+
+    title = ''
     name = 'ana'
     price = 15
+
+    //constructor(private appService: AppService) { }
+
+    ngOnInit() {
+        this.title = this.appService.getTitle()
+    }
 
     listenSearch(userName: string) {
         console.log(userName)
