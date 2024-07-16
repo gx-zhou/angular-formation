@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, Signal, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { User } from '../../core/interfaces/user.interface';
 import { UserService } from '../../core/services/user.service';
@@ -18,9 +18,9 @@ export class UsersComponent implements OnInit {
   nbSelected = 0;
   extSelected = '';
   extensions: string[] = ['tv', 'biz', 'io', 'me'];
-  users: User[] = [];
+  users: Signal<User[]> = this.userService.usersFiltered
 
   ngOnInit(): void {
-    this.users = this.userService.getAll()
+    // this.userService.getAll()
   }
 }
