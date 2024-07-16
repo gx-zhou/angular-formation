@@ -13,14 +13,22 @@ import { UserCardComponent } from './user-card/user-card.component';
   imports: [UserCardComponent, PluralPipe, FormsModule, ExtensionPipe],
 })
 export class UsersComponent implements OnInit {
-  private userService = inject(UserService)
+  private userService = inject(UserService);
 
   nbSelected = 0;
   extSelected = '';
   extensions: string[] = ['tv', 'biz', 'io', 'me'];
-  users: Signal<User[]> = this.userService.usersFiltered
+  users: Signal<User[]> = this.userService.usersFiltered;
 
   ngOnInit(): void {
-    // this.userService.getAll()
+    this.userService.getAll().subscribe()
+  }
+
+  createUser() {
+    this.userService.create({
+      email: 'ana@gmail.tv',
+      name: 'ana',
+      username: 'test'
+    }).subscribe()
   }
 }
