@@ -1,6 +1,6 @@
 import { Component, Input } from "@angular/core";
-import { User } from "../../core/interfaces/user.interface";
-import { LangPipe } from "../../shared/pipes/lang.pipe";
+import { User } from "../../../core/interfaces/user.interface";
+import { LangPipe } from "../../../shared/pipes/lang.pipe";
 
 @Component({
     selector: 'app-user-card',

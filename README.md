@@ -1,22 +1,6 @@
-/api/me -> { email: '...', name: '...' }
+/login -> Serveur -> Router -> Controller -> Model -> View
 
-```ts
-class Me {
-    getName() {
-        return ...
-    }
-}
-```
-
-Navbar
-
-```ts
-me.getName()
-```
-
-Liste des participants
+/login -> Routeur -> Component
 
 
-```ts
-me.getName()
-```
+SPA (Single Page Application)

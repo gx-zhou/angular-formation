@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AutoCompletePipe } from '../../shared/pipes/autocomplete.pipe';
+import { AutoCompletePipe } from '../../../shared/pipes/autocomplete.pipe';
 
 @Component({
   selector: 'app-search',
