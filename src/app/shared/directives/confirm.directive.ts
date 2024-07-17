@@ -1,4 +1,4 @@
-import { Directive, HostListener, Input } from "@angular/core";
+import { Directive, EventEmitter, HostListener, Input, Output, effect, input } from "@angular/core";
 
 @Directive({
     selector: '[confirm]',
@@ -6,11 +6,18 @@ import { Directive, HostListener, Input } from "@angular/core";
 })
 export class ConfirmDirective {
     @Input('confirm') message = ''
-    @Input() confirmUsername = ''
+    confirmUsername = input('')
+    @Output() eventConfirm: EventEmitter<void> = new EventEmitter()
+
+    constructor() {
+        effect(() => {
+            console.log(this.confirmUsername())
+        })
+    }
 
     @HostListener('click')
     openDialog() {
-        const bool = window.confirm(this.message + ' ' + this.confirmUsername)
-        console.log(bool)
+        const bool = window.confirm(this.message + ' ' + this.confirmUsername())
+        if (bool) this.eventConfirm.emit()
     }
 }

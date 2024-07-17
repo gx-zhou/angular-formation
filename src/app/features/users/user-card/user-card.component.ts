@@ -13,7 +13,7 @@ import { SharedModule } from "../../../shared/shared.module";
             {{ user.email }}
             <footer>
                 <button 
-                    (click)="removeUser()" 
+                    (eventConfirm)="removeUser()" 
                     confirm="Etes vous de ..."
                     [confirmUsername]="user.name"
                     >
