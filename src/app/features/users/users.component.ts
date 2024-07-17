@@ -1,4 +1,4 @@
-import { Component, OnInit, Signal, inject } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, Signal, ViewChildren, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { User } from '../../core/interfaces/user.interface';
 import { UserService } from '../../core/services/user.service';
@@ -15,10 +15,13 @@ import { UserCardComponent } from './user-card/user-card.component';
 export class UsersComponent implements OnInit {
   private userService = inject(UserService);
 
+  @ViewChildren('refUser') divUsers!: QueryList<ElementRef<HTMLDivElement>>
   nbSelected = 0;
   extSelected = '';
   extensions: string[] = ['tv', 'biz', 'io', 'me'];
   users: Signal<User[]> = this.userService.usersFiltered;
+  userIndex = 0
+  errorMessage = ''
 
   ngOnInit(): void {
     this.userService.getAll().subscribe()
@@ -34,5 +37,17 @@ export class UsersComponent implements OnInit {
 
   deleteUser(id: number) {
     this.userService.delete(id).subscribe()
+  }
+
+  scrollToIndex() {
+    if (this.userIndex < 0 || this.userIndex >= this.users().length) {
+      this.errorMessage = 'Invalid Index'
+      return
+    }
+    const divUser = this.divUsers.toArray()[+this.userIndex]
+    divUser.nativeElement.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center'
+    })
   }
 }

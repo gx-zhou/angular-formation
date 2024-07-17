@@ -15,9 +15,19 @@
 
 <button (click)="createUser()">Créer utilisateur</button>
 
+<div>
+    <input type="text" placeholder="Mettre l'index" [(ngModel)]="userIndex">
+    @if (errorMessage) {
+        <div>{{ errorMessage }}</div>
+    }
+    <button (click)="scrollToIndex()">Scroll</button>
+</div>
+
 @for (u of users() | extFilter:extSelected ; track u.id) {
-    <app-user-card [user]="u" (eventDelete)="deleteUser($event)">
-        <h1 #title>Titre</h1>
-        <h2>Footer</h2>
-    </app-user-card>
+    <div #refUser>
+        <app-user-card [user]="u" (eventDelete)="deleteUser($event)">
+            <h1 #title>Titre</h1>
+            <h2>Footer</h2>
+        </app-user-card>
+    </div>
 }

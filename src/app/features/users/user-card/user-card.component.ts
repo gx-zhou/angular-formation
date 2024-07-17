@@ -28,6 +28,6 @@ export class UserCardComponent implements AfterContentInit {
     }
 
     ngAfterContentInit(): void {
-        console.log(this.title)
+      //  console.log(this.title)
     }
 }
