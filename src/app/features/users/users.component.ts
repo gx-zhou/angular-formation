@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, QueryList, Signal, ViewChildren, inject } from '@angular/core';
+import { Component, ElementRef, QueryList, Signal, ViewChildren, inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { User } from '../../core/interfaces/user.interface';
 import { UserService } from '../../core/services/user.service';
@@ -12,7 +12,7 @@ import { UserCardComponent } from './user-card/user-card.component';
   standalone: true,
   imports: [UserCardComponent, PluralPipe, FormsModule, ExtensionPipe],
 })
-export class UsersComponent implements OnInit {
+export class UsersComponent /*implements OnInit */ {
   private userService = inject(UserService);
 
   @ViewChildren('refUser') divUsers!: QueryList<ElementRef<HTMLDivElement>>
@@ -24,9 +24,9 @@ export class UsersComponent implements OnInit {
   errorMessage = ''
   loading = false
 
-  ngOnInit(): void {
-    this.userService.getAll().subscribe()
-  }
+  // ngOnInit(): void {
+  //   this.userService.getAll().subscribe()
+  // }
 
   createUser(form: NgForm) {
     if (form.invalid) return

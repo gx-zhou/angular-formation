@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { AutoCompletePipe } from '../../../shared/pipes/autocomplete.pipe';
 
 @Component({
   selector: 'app-search',
   template: `
-    <input type="text" [(ngModel)]="userName" />
+    <input type="text" [formControl]="propSearch" />
     @if (userName != '') {
     <button (click)="search()">Rechercher</button>
     }
@@ -22,15 +23,24 @@ import { AutoCompletePipe } from '../../../shared/pipes/autocomplete.pipe';
     </ul>
   `,
   standalone: true,
-  imports: [FormsModule, AutoCompletePipe /*, NgIf, NgFor*/],
+  imports: [FormsModule, ReactiveFormsModule, AutoCompletePipe /*, NgIf, NgFor*/],
 })
 export class SearchComponent implements OnInit {
   @Input() userName = '';
   @Output() eventSearch: EventEmitter<string> = new EventEmitter();
   firstNames: string[] = ['ana', 'ben', 'jim'];
+  propSearch: FormControl<string> = new FormControl()
 
   ngOnInit() {
-    console.log(this.userName)
+     this.propSearch.valueChanges
+     .pipe(
+        debounceTime(300),
+        distinctUntilChanged()
+     )
+     .subscribe((str) => {
+       console.log(str)
+       this.userName = str
+     })
   }
 
   search() {
