@@ -13,7 +13,28 @@
     }
 </select>
 
-<button (click)="createUser()">Créer utilisateur</button>
+<form (ngSubmit)="createUser(myForm)" #myForm="ngForm">
+
+    @if (myForm.invalid && myForm.submitted) {
+        @if (email.hasError('required')) {
+            Email obligatoire
+        }
+        @if (name.hasError('required')) {
+            Nom obligatoire
+        }
+    }
+
+    <label>Email</label>
+    <input type="text" name="email" ngModel #email="ngModel" required>
+
+    <label>Nom</label>
+    <input type="text" name="name" ngModel #name="ngModel" required>
+
+    <button [ariaBusy]="loading" [disabled]="loading">
+        {{ loading ? '' : 'Créer utilisateur' }}
+    </button>
+</form>
+
 
 <div>
     <input type="text" placeholder="Mettre l'index" [(ngModel)]="userIndex">

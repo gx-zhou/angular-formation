@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, QueryList, Signal, ViewChildren, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { User } from '../../core/interfaces/user.interface';
 import { UserService } from '../../core/services/user.service';
 import { ExtensionPipe } from '../../shared/pipes/extension.pipe';
@@ -22,17 +22,19 @@ export class UsersComponent implements OnInit {
   users: Signal<User[]> = this.userService.usersFiltered;
   userIndex = 0
   errorMessage = ''
+  loading = false
 
   ngOnInit(): void {
     this.userService.getAll().subscribe()
   }
 
-  createUser() {
-    this.userService.create({
-      email: 'ana@gmail.tv',
-      name: 'ana',
-      username: 'test'
-    }).subscribe()
+  createUser(form: NgForm) {
+    if (form.invalid) return
+    this.loading = true
+    this.userService.create(form.value).subscribe(() => {
+      this.loading = false
+      form.resetForm()
+    })
   }
 
   deleteUser(id: number) {
