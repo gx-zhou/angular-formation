@@ -3,7 +3,7 @@ import { Injectable, computed, inject, signal } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { User } from '../interfaces/user.interface';
 
-type UserPayload = Omit<User, 'id'>
+export type UserPayload = Omit<User, 'id'>
 
 @Injectable({
   providedIn: 'root',
@@ -37,6 +37,15 @@ export class UserService {
       tap((user) => {
         const users = this.users()
         this._users.set([ ...users, user ])
+      })
+    )
+  }
+
+  update(id: number, payload: UserPayload): Observable<User> {
+    return this.http.put<User>(this.url + '/' + id, payload).pipe(
+      tap((userModified) => {
+         const users = this.users().map(user => user.id == id ? userModified : user)
+         this._users.set(users)
       })
     )
   }

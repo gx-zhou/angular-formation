@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../core/interfaces/user.interface';
-import { UserService } from '../../core/services/user.service';
+import { UserPayload, UserService } from '../../core/services/user.service';
 
 @Component({
   selector: 'app-user-edit',
@@ -35,5 +35,11 @@ export class UserEditComponent implements OnInit {
     })
   }
 
-  edit() {}
+  edit() {
+    this.userService
+      .update(this.user.id, this.form.value as UserPayload)
+      .subscribe((userModified) => {
+        this.user = userModified
+      })
+  }
 }

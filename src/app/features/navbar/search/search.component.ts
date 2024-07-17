@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, Signal, computed, inject } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { UserService } from '../../../core/services/user.service';
 import { AutoCompletePipe } from '../../../shared/pipes/autocomplete.pipe';
 
 @Component({
@@ -12,7 +13,7 @@ import { AutoCompletePipe } from '../../../shared/pipes/autocomplete.pipe';
     }
     <!-- <button (click)="search()" *ngIf="userName != ''">Rechercher</button> -->
     <ul>
-      @for (firstName of firstNames | autocomplete:userName ; track $index) {
+      @for (firstName of firstNames() | autocomplete:userName ; track $index) {
       <li>{{ firstName }}</li>
       } @empty {
       <p>Aucun nom</p>
@@ -26,9 +27,13 @@ import { AutoCompletePipe } from '../../../shared/pipes/autocomplete.pipe';
   imports: [FormsModule, ReactiveFormsModule, AutoCompletePipe /*, NgIf, NgFor*/],
 })
 export class SearchComponent implements OnInit {
+  private userService = inject(UserService)
+
   @Input() userName = '';
   @Output() eventSearch: EventEmitter<string> = new EventEmitter();
-  firstNames: string[] = ['ana', 'ben', 'jim'];
+  firstNames: Signal<string[]> = computed(() => {
+    return this.userService.users().map(user => user.name)
+  })
   propSearch: FormControl<string> = new FormControl()
 
   ngOnInit() {
@@ -38,7 +43,6 @@ export class SearchComponent implements OnInit {
         distinctUntilChanged()
      )
      .subscribe((str) => {
-       console.log(str)
        this.userName = str
      })
   }
