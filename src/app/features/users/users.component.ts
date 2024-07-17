@@ -1,5 +1,6 @@
-import { Component, ElementRef, QueryList, Signal, ViewChildren, inject } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, QueryList, Signal, ViewChildren, inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
+import { Subscription, interval } from 'rxjs';
 import { User } from '../../core/interfaces/user.interface';
 import { UserService } from '../../core/services/user.service';
 import { ExtensionPipe } from '../../shared/pipes/extension.pipe';
@@ -12,7 +13,7 @@ import { UserCardComponent } from './user-card/user-card.component';
   standalone: true,
   imports: [UserCardComponent, PluralPipe, FormsModule, ExtensionPipe],
 })
-export class UsersComponent /*implements OnInit */ {
+export class UsersComponent implements OnInit, OnDestroy {
   private userService = inject(UserService);
 
   @ViewChildren('refUser') divUsers!: QueryList<ElementRef<HTMLDivElement>>
@@ -23,10 +24,16 @@ export class UsersComponent /*implements OnInit */ {
   userIndex = 0
   errorMessage = ''
   loading = false
+  subscription!: Subscription
 
-  // ngOnInit(): void {
-  //   this.userService.getAll().subscribe()
-  // }
+  ngOnInit(): void {
+    //this.userService.getAll().subscribe()
+    this.subscription = interval(1000).subscribe()
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe()
+  }
 
   createUser(form: NgForm) {
     if (form.invalid) return

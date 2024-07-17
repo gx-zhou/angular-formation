@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { domainValidator } from '../../core/validators/domain.validator';
 
@@ -8,7 +8,7 @@ import { domainValidator } from '../../core/validators/domain.validator';
   imports: [ReactiveFormsModule],
   templateUrl: './login.component.html',
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   propEmail = new FormControl('', [
     Validators.required,
     Validators.minLength(3),
@@ -20,6 +20,12 @@ export class LoginComponent {
     password: this.propPass
   })
   submitted = false
+  
+  ngOnInit(): void {
+    setTimeout(() => {
+      this.propEmail.setValue('test')
+    }, 2000)
+  }
 
   login() {
     this.submitted = true
